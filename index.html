@@ -3,12 +3,25 @@
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
-        <input type="text" id="input-el">
-        <button id="input-btn">SAVE INPUT</button>
-        <button id="tab-btn">SAVE TAB</button>
-        <button id="delete-btn">DELETE ALL</button>
-        <ul id="ul-el">
-        </ul>
+        <div id="country">
+            <label for="country-input">Country: </label>
+            <select name="country-input" id="country-input">
+                <option value="UK">UK</option>
+                <option value="USA">USA</option>
+            </select>
+        </div>
+        <div id="date">
+            <input type="text" id="date-input">
+            <input type="date" id="date-output">
+        </div>
+
+        <button id="check-btn">IS IT A HOLIDAY?</button>
+
+        <div id="results">
+            <p id="check-answer">YES</p>
+            <p id="check-result">Insert holiday here</p>
+        </div>
+        
         <script src="index.js"></script>
     </body>
 </html>
