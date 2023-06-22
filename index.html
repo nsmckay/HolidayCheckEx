@@ -1,8 +1,12 @@
 <html>
     <head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
         <link rel="stylesheet" href="index.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Sunshiney&display=swap" rel="stylesheet">
     </head>
     <body>
+        <h1>Holiday Checker</h1>
         <div id="country">
             <label for="country-input">Country: </label>
             <select name="country-input" id="country-input">
@@ -15,7 +19,9 @@
             <input type="date" id="date-output">
         </div>
 
-        <button id="check-btn">IS IT A HOLIDAY?</button>
+        <div id="check">
+            <button id="check-btn">IS IT A HOLIDAY?</button>
+        </div>
 
         <div id="results">
             <p id="check-answer">YES</p>
