@@ -4,6 +4,9 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Sunshiney&display=swap" rel="stylesheet">
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.8/plugin/customParseFormat.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     </head>
     <body>
         <h1>Holiday Checker</h1>
@@ -28,6 +31,12 @@
             <p id="check-result">Insert holiday here</p>
         </div>
         
+        <script>
+            dayjs().format()
+        </script>
+        <script>
+            dayjs.extend(window.dayjs_plugin_customParseFormat)
+        </script>
         <script src="index.js"></script>
     </body>
 </html>
