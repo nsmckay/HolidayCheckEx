@@ -1,21 +1,26 @@
-console.log(dayjs)
+//const dayjs = require("dayjs")
+
+//console.log(dayjs)
 //const dayjs = require('dayjs')
 //import dayjs from 'dayjs' // ES 2015
 //dayjs().format()
 //var customParseFormat = require('dayjs/plugin/customParseFormat')
 //dayjs.extend(customParseFormat)
 
-let myLeads = []
-const inputEl = document.getElementById("input-el")
-const inputBtn = document.getElementById("input-btn")
-const ulEl = document.getElementById("ul-el")
-const deleteBtn = document.getElementById("delete-btn")
-const leadsFromLocalStorage = JSON.parse( localStorage.getItem("myLeads") )
-const tabBtn = document.getElementById("tab-btn")
+// let myLeads = []
+// const inputEl = document.getElementById("input-el")
+// const inputBtn = document.getElementById("input-btn")
+// const ulEl = document.getElementById("ul-el")
+// const deleteBtn = document.getElementById("delete-btn")
+// const leadsFromLocalStorage = JSON.parse( localStorage.getItem("myLeads") )
+// const tabBtn = document.getElementById("tab-btn")
 
+let myDate = []
 const countryInput = document.getElementById("country-input")
 const dateInput = document.getElementById("date-input")
 const dateOutput = document.getElementById("date-output")
+const dateFromLocalStorage = JSON.parse(localStorage.getItem("myDate"))
+const clearBtn = document.getElementById("clear-btn")
 
 let today = new Date()
 let todayString = today.toDateString()
@@ -27,6 +32,14 @@ let queryDateString = todayString
 document.addEventListener('DOMContentLoaded', function() {
     dateInput.setAttribute("value", todayString)
     dateOutput.valueAsDate = today
+    if(dateFromLocalStorage) {
+        myDate = dateFromLocalStorage
+        //queryDateString = myDate[0]
+        queryDateString = dayjs(myDate[0]).format("MMM-DD-YYYY").toString()
+        dateInput.setAttribute("value", queryDateString)
+        queryDate = dayjs(myDate[0]).format("YYYY-MM-DD")
+        dateOutput.value = queryDate
+    }
 }, false)
 
 countryInput.addEventListener("change", function() {
@@ -42,11 +55,21 @@ dateInput.addEventListener("change", function() {
     queryDate = dayjs(queryDateString).format("YYYY-MM-DD")
     console.log(queryDate)
     dateOutput.value = queryDate
+    localStorage.clear()
+    myDate = []
+    myDate.push(queryDate)
+    localStorage.setItem("myDate", JSON.stringify(myDate))
 })
 
 dateOutput.addEventListener("change", function() {
     queryDate = dateOutput.value
+    dateInput.value = ""
+    //dateInput.value = queryDate.toDateString()
     console.log(queryDate)
+    localStorage.clear()
+    myDate = []
+    myDate.push(queryDate)
+    localStorage.setItem("myDate", JSON.stringify(myDate))
 })
 
 function removeDay(str) {
@@ -117,42 +140,52 @@ function removeDay(str) {
     return str
 }
 
-if (leadsFromLocalStorage) {
-    myLeads = leadsFromLocalStorage
-    render(myLeads)
-}
-
-tabBtn.addEventListener("click", function(){    
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-        myLeads.push(tabs[0].url)
-        localStorage.setItem("myLeads", JSON.stringify(myLeads) )
-        render(myLeads)
-    })
-})
-
-function render(leads) {
-    let listItems = ""
-    for (let i = 0; i < leads.length; i++) {
-        listItems += `
-            <li>
-                <a target='_blank' href='${leads[i]}'>
-                    ${leads[i]}
-                </a>
-            </li>
-        `
-    }
-    ulEl.innerHTML = listItems
-}
-
-deleteBtn.addEventListener("dblclick", function() {
+clearBtn.addEventListener("click", function() {
     localStorage.clear()
-    myLeads = []
-    render(myLeads)
+    myDate = []
+    queryDateString = ""
+    //dateInput.value = queryDateString
+    dateInput.setAttribute("value", "")
+    queryDate = today
+    dateOutput.valueAsDate = queryDate
 })
 
-inputBtn.addEventListener("click", function() {
-    myLeads.push(inputEl.value)
-    inputEl.value = ""
-    localStorage.setItem("myLeads", JSON.stringify(myLeads) )
-    render(myLeads)
-})
+//if (leadsFromLocalStorage) {
+    //myLeads = leadsFromLocalStorage
+    //render(myLeads)
+//}
+
+// tabBtn.addEventListener("click", function(){    
+//     chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+//         myLeads.push(tabs[0].url)
+//         localStorage.setItem("myLeads", JSON.stringify(myLeads) )
+//         render(myLeads)
+//     })
+// })
+
+// function render(leads) {
+//     let listItems = ""
+//     for (let i = 0; i < leads.length; i++) {
+//         listItems += `
+//             <li>
+//                 <a target='_blank' href='${leads[i]}'>
+//                     ${leads[i]}
+//                 </a>
+//             </li>
+//         `
+//     }
+//     ulEl.innerHTML = listItems
+// }
+
+//deleteBtn.addEventListener("dblclick", function() {
+    //localStorage.clear()
+    //myLeads = []
+    //render(myLeads)
+//})
+
+//inputBtn.addEventListener("click", function() {
+    //myLeads.push(inputEl.value)
+    //inputEl.value = ""
+    //localStorage.setItem("myLeads", JSON.stringify(myLeads) )
+    //render(myLeads)
+//})

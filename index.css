@@ -76,9 +76,21 @@ a {
 
 #check {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     border-bottom: solid 2px orangered;
     padding-bottom: 15px;
+}
+
+#check-btn {
+    margin-left: 60px;
+}
+
+#clear-btn {
+    background-color: red;
+}
+
+#clear-btn:active {
+    background-color: black;
 }
 
 #results {
