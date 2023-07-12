@@ -16,7 +16,11 @@
 // const tabBtn = document.getElementById("tab-btn")
 
 let myDate = []
+//let myCountry = []
+let myCountry = ""
 const countryInput = document.getElementById("country-input")
+//const countryFromLocalStorage = JSON.parse(localStorage.getItem("myCountry"))
+const countryFromLocalStorage = localStorage.getItem("myCountry")
 const dateInput = document.getElementById("date-input")
 const dateOutput = document.getElementById("date-output")
 const dateFromLocalStorage = JSON.parse(localStorage.getItem("myDate"))
@@ -32,6 +36,13 @@ let queryDateString = todayString
 document.addEventListener('DOMContentLoaded', function() {
     dateInput.setAttribute("value", todayString)
     dateOutput.valueAsDate = today
+    if(countryFromLocalStorage) {
+        myCountry = countryFromLocalStorage
+        //countryInput.value = myCountry[0].toString()
+        //countryInput.setAttribute("value", myCountry[0].toString())
+        countryInput.value = myCountry
+        //countryInput.setAttribute("value", myCountry)
+    }
     if(dateFromLocalStorage) {
         myDate = dateFromLocalStorage
         //queryDateString = myDate[0]
@@ -45,6 +56,15 @@ document.addEventListener('DOMContentLoaded', function() {
 countryInput.addEventListener("change", function() {
     queryCountry = countryInput.value
     console.log(queryCountry)
+    console.log(typeof queryCountry)
+    localStorage.removeItem("myCountry")
+    //myCountry = []
+    //myCountry.push(queryCountry)
+    myCountry = queryCountry
+    console.log(myCountry)
+    //localStorage.setItem("myCountry", JSON.stringify(myCountry))
+    localStorage.setItem("myCountry", myCountry)
+    console.log(localStorage)
 })
 
 dateInput.addEventListener("change", function() {
@@ -55,10 +75,11 @@ dateInput.addEventListener("change", function() {
     queryDate = dayjs(queryDateString).format("YYYY-MM-DD")
     console.log(queryDate)
     dateOutput.value = queryDate
-    localStorage.clear()
+    localStorage.removeItem("myDate")
     myDate = []
     myDate.push(queryDate)
     localStorage.setItem("myDate", JSON.stringify(myDate))
+    console.log(localStorage)
 })
 
 dateOutput.addEventListener("change", function() {
@@ -142,6 +163,10 @@ function removeDay(str) {
 
 clearBtn.addEventListener("click", function() {
     localStorage.clear()
+    //myCountry = []
+    myCountry = ""
+    //countryInput.setAttribute("value", "UK")
+    countryInput.value = myCountry
     myDate = []
     queryDateString = ""
     //dateInput.value = queryDateString
