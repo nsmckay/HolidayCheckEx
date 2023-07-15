@@ -24,7 +24,14 @@ const countryFromLocalStorage = localStorage.getItem("myCountry")
 const dateInput = document.getElementById("date-input")
 const dateOutput = document.getElementById("date-output")
 const dateFromLocalStorage = JSON.parse(localStorage.getItem("myDate"))
+const checkBtn = document.getElementById("check-btn")
+const apiKey = "a82fc2684f33c2d3df3f24d9f2436d3aa492e050"
 const clearBtn = document.getElementById("clear-btn")
+const results = document.getElementById("results")
+const checkAnswer = document.getElementById("check-answer")
+const checkResult = document.getElementById("check-result")
+const checkResultType = document.getElementById("check-result-type")
+const checkResultDesc = document.getElementById("check-result-desc")
 
 let today = new Date()
 let todayString = today.toDateString()
@@ -34,6 +41,7 @@ let queryDate = today // date to be selected by user, initialised as today's dat
 let queryDateString = todayString
 
 document.addEventListener('DOMContentLoaded', function() {
+    results.style.display = "none"
     dateInput.setAttribute("value", todayString)
     dateOutput.valueAsDate = today
     if(countryFromLocalStorage) {
@@ -160,6 +168,48 @@ function removeDay(str) {
 
     return str
 }
+
+checkBtn.addEventListener("click", function() {
+    results.style.display = "block"
+    let apiCountry = "gb"
+    if(myCountry === "UK") {
+        apiCountry = "gb"
+    } else if (myCountry === "USA") {
+        apiCountry = "us"
+    }
+    console.log(apiCountry)
+
+    let apiDate = dayjs(myDate[0]).format("MM-DD-YYYY").toString()
+    let apiYear = apiDate.slice(-4)
+    let apiMonth = apiDate.slice(0, 2)
+    let apiDay = apiDate.slice(3, 5)
+    console.log(apiDate)
+    console.log(apiYear)
+    console.log(apiMonth)
+    console.log(apiDay)
+
+    console.log(`https://calendarific.com/api/v2/holidays?api_key=${apiKey}&country=${apiCountry}&year=${apiYear}&month=${apiMonth}&day=${apiDay}`)
+
+    fetch(`https://calendarific.com/api/v2/holidays?api_key=${apiKey}&country=${apiCountry}&year=${apiYear}&month=${apiMonth}&day=${apiDay}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            console.log(data.response.holidays.length)
+            if(data.response.holidays.length === 0) {
+                console.log(`NO, ${apiDate} is NOT a holiday.`)
+                checkAnswer.innerText = `NO, ${apiDate} is NOT a holiday.`
+                checkResult.innerText = ""
+                checkResultType.innerText = ""
+                checkResultDesc.innerText = ""
+            } else {
+                console.log(`YES, ${apiDate} IS a holiday.`)
+                checkAnswer.innerText = `YES, ${apiDate} IS a holiday.`
+                checkResult.innerText = `It is ${data.response.holidays[0].name}`
+                checkResultType.innerText = `${data.response.holidays[0].name} is a ${data.response.holidays[0].type}`
+                checkResultDesc.innerText = `${data.response.holidays[0].description}`
+            }
+        })
+})
 
 clearBtn.addEventListener("click", function() {
     localStorage.clear()
