@@ -24,10 +24,13 @@ const countryFromLocalStorage = localStorage.getItem("myCountry")
 const dateInput = document.getElementById("date-input")
 const dateOutput = document.getElementById("date-output")
 const dateFromLocalStorage = JSON.parse(localStorage.getItem("myDate"))
+const infoBtn = document.getElementById("info-btn")
 const checkBtn = document.getElementById("check-btn")
 const apiKey = "a82fc2684f33c2d3df3f24d9f2436d3aa492e050"
 const clearBtn = document.getElementById("clear-btn")
+const info = document.getElementById("info")
 const results = document.getElementById("results")
+const checkImg = document.getElementById("check-img")
 const checkAnswer = document.getElementById("check-answer")
 const checkResult = document.getElementById("check-result")
 const checkResultType = document.getElementById("check-result-type")
@@ -41,6 +44,7 @@ let queryDate = today // date to be selected by user, initialised as today's dat
 let queryDateString = todayString
 
 document.addEventListener('DOMContentLoaded', function() {
+    info.style.display = "none"
     results.style.display = "none"
     dateInput.setAttribute("value", todayString)
     dateOutput.valueAsDate = today
@@ -169,6 +173,14 @@ function removeDay(str) {
     return str
 }
 
+infoBtn.addEventListener("click", function() {
+    if (info.style.display === "none") {
+        info.style.display = "block"
+    } else {
+        info.style.display = "none"
+    }
+})
+
 checkBtn.addEventListener("click", function() {
     results.style.display = "block"
     let apiCountry = "gb"
@@ -197,12 +209,16 @@ checkBtn.addEventListener("click", function() {
             console.log(data.response.holidays.length)
             if(data.response.holidays.length === 0) {
                 console.log(`NO, ${apiDate} is NOT a holiday.`)
+                checkImg.src = "NoIcon.png"
+                checkImg.alt = "NO"
                 checkAnswer.innerText = `NO, ${apiDate} is NOT a holiday.`
                 checkResult.innerText = ""
                 checkResultType.innerText = ""
                 checkResultDesc.innerText = ""
             } else {
                 console.log(`YES, ${apiDate} IS a holiday.`)
+                checkImg.src = "YesIcon.png"
+                checkImg.alt = "YES"
                 checkAnswer.innerText = `YES, ${apiDate} IS a holiday.`
                 checkResult.innerText = `It is ${data.response.holidays[0].name}`
                 checkResultType.innerText = `${data.response.holidays[0].name} is a ${data.response.holidays[0].type}`

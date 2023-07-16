@@ -9,7 +9,7 @@ h1 {
     font-family: 'Sunshiney', cursive;
     text-align: center;
     margin-top: 0;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 input {
@@ -51,6 +51,14 @@ a {
     color:orange;
 }
 
+#disclaimer {
+    text-align: center;
+    margin-top: 0px;
+    padding-top: 0px;
+    font-size: 10px;
+    margin-bottom: 30px;
+}
+
 #country {
     margin-top: 0px;
     margin-bottom: 15px;
@@ -82,7 +90,7 @@ a {
 }
 
 #check-btn {
-    margin-left: 60px;
+    margin-left: 0px;
 }
 
 #clear-btn {
@@ -93,7 +101,20 @@ a {
     background-color: black;
 }
 
+#info {
+    border-bottom: solid 2px orangered;
+    padding-bottom: 0px;
+}
+
 #results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 0px;
+}
+
+#check-img-container {
     display: flex;
     flex-direction: column;
     align-items: center;

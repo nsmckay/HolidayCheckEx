@@ -9,7 +9,8 @@
         <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     </head>
     <body>
-        <h1>Holiday Checker</h1>
+        <h1>Holiday Checker 🌞</h1>
+        <p id="disclaimer">Powered by Calendarific</p>
         <div id="country">
             <label for="country-input">Country: </label>
             <select name="country-input" id="country-input">
@@ -23,12 +24,20 @@
         </div>
 
         <div id="check">
-            <p></p>
+            <button id="info-btn">❓</button>
             <button id="check-btn">CHECK</button>
             <button id="clear-btn">🗑️</button>
         </div>
 
+        <div id="info">
+            <p><b>How to use:</b> select your country from the top input box, then copy & paste your date into the left-hand date input box (alternatively, use the calendar on the right-hand date box). Then click "CHECK". You may clear the inputs by clicking on the bin, but ensure all inputs are filled before clicking "CHECK".</p>
+            <p>This app is powered by the <b>Calendarific API</b>. Since this was made using the FREE plan, please note that requests for this service are limited to 1000 per month, globally.</p>
+        </div>
+
         <div id="results">
+            <div id="check-img-container">
+                <img id="check-img" source="HolidayIcon.png" alt="default icon for app" width="100" height="100">
+            </div>
             <p id="check-answer">YES</p>
             <p id="check-result">Insert holiday here</p>
             <p id="check-result-type">Type of holiday</p>
