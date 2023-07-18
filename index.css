@@ -106,6 +106,12 @@ a {
     padding-bottom: 0px;
 }
 
+#error {
+    color: red;
+    border-bottom: solid 2px orangered;
+    padding-bottom: 0px;
+}
+
 #results {
     display: flex;
     flex-direction: column;

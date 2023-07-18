@@ -29,6 +29,7 @@ const checkBtn = document.getElementById("check-btn")
 const apiKey = "a82fc2684f33c2d3df3f24d9f2436d3aa492e050"
 const clearBtn = document.getElementById("clear-btn")
 const info = document.getElementById("info")
+const errors = document.getElementById("error")
 const results = document.getElementById("results")
 const checkImg = document.getElementById("check-img")
 const checkAnswer = document.getElementById("check-answer")
@@ -45,6 +46,7 @@ let queryDateString = todayString
 
 document.addEventListener('DOMContentLoaded', function() {
     info.style.display = "none"
+    errors.style.display = "none"
     results.style.display = "none"
     dateInput.setAttribute("value", todayString)
     dateOutput.valueAsDate = today
@@ -182,6 +184,18 @@ infoBtn.addEventListener("click", function() {
 })
 
 checkBtn.addEventListener("click", function() {
+
+    console.log(Date.parse(dateOutput.value))
+    console.log(Date.parse(typeof dateOutput.value))
+    if(isNaN(Date.parse(dateOutput.value))) { //check if date is valid by converting to number
+        console.log("NOT A DATE!")
+        errors.style.display = "block"
+        return //if inputs invalid, display error and end function early
+    } else {
+         console.log("IS A DATE!")
+         errors.style.display = "none"
+    }
+
     results.style.display = "block"
     let apiCountry = "gb"
     if(myCountry === "UK") {
