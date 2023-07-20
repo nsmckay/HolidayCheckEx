@@ -1,32 +1,14 @@
-//const dayjs = require("dayjs")
-
-//console.log(dayjs)
-//const dayjs = require('dayjs')
-//import dayjs from 'dayjs' // ES 2015
-//dayjs().format()
-//var customParseFormat = require('dayjs/plugin/customParseFormat')
-//dayjs.extend(customParseFormat)
-
-// let myLeads = []
-// const inputEl = document.getElementById("input-el")
-// const inputBtn = document.getElementById("input-btn")
-// const ulEl = document.getElementById("ul-el")
-// const deleteBtn = document.getElementById("delete-btn")
-// const leadsFromLocalStorage = JSON.parse( localStorage.getItem("myLeads") )
-// const tabBtn = document.getElementById("tab-btn")
-
 let myDate = []
-//let myCountry = []
 let myCountry = ""
+
 const countryInput = document.getElementById("country-input")
-//const countryFromLocalStorage = JSON.parse(localStorage.getItem("myCountry"))
 const countryFromLocalStorage = localStorage.getItem("myCountry")
 const dateInput = document.getElementById("date-input")
 const dateOutput = document.getElementById("date-output")
 const dateFromLocalStorage = JSON.parse(localStorage.getItem("myDate"))
 const infoBtn = document.getElementById("info-btn")
 const checkBtn = document.getElementById("check-btn")
-const apiKey = "a82fc2684f33c2d3df3f24d9f2436d3aa492e050"
+const apiKey = "a82fc2684f33c2d3df3f24d9f2436d3aa492e050" // API key from Calendarific
 const clearBtn = document.getElementById("clear-btn")
 const info = document.getElementById("info")
 const errors = document.getElementById("error")
@@ -39,27 +21,22 @@ const checkResultDesc = document.getElementById("check-result-desc")
 
 let today = new Date()
 let todayString = today.toDateString()
-
 let queryCountry = countryInput.value // country to be selected by user
 let queryDate = today // date to be selected by user, initialised as today's date
 let queryDateString = todayString
 
 document.addEventListener('DOMContentLoaded', function() {
-    info.style.display = "none"
+    info.style.display = "none" // hide divs storing info not needed until later
     errors.style.display = "none"
     results.style.display = "none"
-    dateInput.setAttribute("value", todayString)
+    dateInput.setAttribute("value", todayString) // date input value initialised as today's date
     dateOutput.valueAsDate = today
-    if(countryFromLocalStorage) {
+    if(countryFromLocalStorage) { // if country already in local storage, use that instead of default
         myCountry = countryFromLocalStorage
-        //countryInput.value = myCountry[0].toString()
-        //countryInput.setAttribute("value", myCountry[0].toString())
         countryInput.value = myCountry
-        //countryInput.setAttribute("value", myCountry)
     }
-    if(dateFromLocalStorage) {
+    if(dateFromLocalStorage) { // if date already in local storage, use that instead of default
         myDate = dateFromLocalStorage
-        //queryDateString = myDate[0]
         queryDateString = dayjs(myDate[0]).format("MMM-DD-YYYY").toString()
         dateInput.setAttribute("value", queryDateString)
         queryDate = dayjs(myDate[0]).format("YYYY-MM-DD")
@@ -69,42 +46,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
 countryInput.addEventListener("change", function() {
     queryCountry = countryInput.value
-    console.log(queryCountry)
-    console.log(typeof queryCountry)
-    localStorage.removeItem("myCountry")
-    //myCountry = []
-    //myCountry.push(queryCountry)
+    //console.log(queryCountry)
+    //console.log(typeof queryCountry)
+    localStorage.removeItem("myCountry") // clear existing country in local storage
     myCountry = queryCountry
-    console.log(myCountry)
-    //localStorage.setItem("myCountry", JSON.stringify(myCountry))
-    localStorage.setItem("myCountry", myCountry)
-    console.log(localStorage)
+    //console.log(myCountry)
+    localStorage.setItem("myCountry", myCountry) // store country selected by user in local storage
+    //console.log(localStorage)
 })
 
 dateInput.addEventListener("change", function() {
     queryDateString = removeDay(dateInput.value)
-    console.log(queryDateString)
-    console.log(typeof queryDateString)
-    //queryDate = dayjs(queryDateString, "MMM-DD-YYYY").format("YYYY-MM-DD")
+    //console.log(queryDateString)
+    //console.log(typeof queryDateString)
     queryDate = dayjs(queryDateString).format("YYYY-MM-DD")
-    console.log(queryDate)
-    dateOutput.value = queryDate
-    localStorage.removeItem("myDate")
+    //console.log(queryDate)
+    dateOutput.value = queryDate // set date output on right to same date as chosen by user on left input
+    localStorage.removeItem("myDate") // clear existing date in local storage
     myDate = []
     myDate.push(queryDate)
-    localStorage.setItem("myDate", JSON.stringify(myDate))
-    console.log(localStorage)
+    localStorage.setItem("myDate", JSON.stringify(myDate)) // store date selected by user in local storage
+    //console.log(localStorage)
 })
 
-dateOutput.addEventListener("change", function() {
+dateOutput.addEventListener("change", function() { // if user selects date using calendar in right date output box
     queryDate = dateOutput.value
     dateInput.value = ""
-    //dateInput.value = queryDate.toDateString()
-    console.log(queryDate)
-    localStorage.clear()
+    //console.log(queryDate)
+    localStorage.clear() // clear existing date in local storage
     myDate = []
     myDate.push(queryDate)
-    localStorage.setItem("myDate", JSON.stringify(myDate))
+    localStorage.setItem("myDate", JSON.stringify(myDate)) // store date selected by user in local storage
 })
 
 function removeDay(str) {
@@ -175,7 +147,7 @@ function removeDay(str) {
     return str
 }
 
-infoBtn.addEventListener("click", function() {
+infoBtn.addEventListener("click", function() { //toggle visibility of div containing disclaimer and info on how to use extension
     if (info.style.display === "none") {
         info.style.display = "block"
     } else {
@@ -188,31 +160,33 @@ checkBtn.addEventListener("click", function() {
     console.log(Date.parse(dateOutput.value))
     console.log(Date.parse(typeof dateOutput.value))
     if(isNaN(Date.parse(dateOutput.value))) { //check if date is valid by converting to number
-        console.log("NOT A DATE!")
+        //console.log("NOT A DATE!")
         errors.style.display = "block"
         return //if inputs invalid, display error and end function early
     } else {
-         console.log("IS A DATE!")
+         //console.log("IS A DATE!")
          errors.style.display = "none"
     }
 
-    results.style.display = "block"
+    results.style.display = "block" // make holiday query results div visible
     let apiCountry = "gb"
-    if(myCountry === "UK") {
+    if(myCountry === "UK") { // country selected by user must be changed to format used by API
         apiCountry = "gb"
     } else if (myCountry === "USA") {
         apiCountry = "us"
+    } else {
+        apiCountry = "gb" // default to UK if myCountry is anything other than the above
     }
-    console.log(apiCountry)
+    //console.log(apiCountry)
 
     let apiDate = dayjs(myDate[0]).format("MM-DD-YYYY").toString()
     let apiYear = apiDate.slice(-4)
     let apiMonth = apiDate.slice(0, 2)
     let apiDay = apiDate.slice(3, 5)
-    console.log(apiDate)
-    console.log(apiYear)
-    console.log(apiMonth)
-    console.log(apiDay)
+    //console.log(apiDate)
+    //console.log(apiYear)
+    //console.log(apiMonth)
+    //console.log(apiDay)
 
     console.log(`https://calendarific.com/api/v2/holidays?api_key=${apiKey}&country=${apiCountry}&year=${apiYear}&month=${apiMonth}&day=${apiDay}`)
 
@@ -221,7 +195,7 @@ checkBtn.addEventListener("click", function() {
         .then(data => {
             console.log(data)
             console.log(data.response.holidays.length)
-            if(data.response.holidays.length === 0) {
+            if(data.response.holidays.length === 0) { // if API array containing holidays is empty, means there is not a holiday that day for that country
                 console.log(`NO, ${apiDate} is NOT a holiday.`)
                 checkImg.src = "NoIcon.png"
                 checkImg.alt = "NO"
@@ -241,56 +215,13 @@ checkBtn.addEventListener("click", function() {
         })
 })
 
-clearBtn.addEventListener("click", function() {
+clearBtn.addEventListener("click", function() { // clear values for all inputs
     localStorage.clear()
-    //myCountry = []
     myCountry = ""
-    //countryInput.setAttribute("value", "UK")
     countryInput.value = myCountry
     myDate = []
     queryDateString = ""
-    //dateInput.value = queryDateString
     dateInput.setAttribute("value", "")
     queryDate = today
     dateOutput.valueAsDate = queryDate
 })
-
-//if (leadsFromLocalStorage) {
-    //myLeads = leadsFromLocalStorage
-    //render(myLeads)
-//}
-
-// tabBtn.addEventListener("click", function(){    
-//     chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-//         myLeads.push(tabs[0].url)
-//         localStorage.setItem("myLeads", JSON.stringify(myLeads) )
-//         render(myLeads)
-//     })
-// })
-
-// function render(leads) {
-//     let listItems = ""
-//     for (let i = 0; i < leads.length; i++) {
-//         listItems += `
-//             <li>
-//                 <a target='_blank' href='${leads[i]}'>
-//                     ${leads[i]}
-//                 </a>
-//             </li>
-//         `
-//     }
-//     ulEl.innerHTML = listItems
-// }
-
-//deleteBtn.addEventListener("dblclick", function() {
-    //localStorage.clear()
-    //myLeads = []
-    //render(myLeads)
-//})
-
-//inputBtn.addEventListener("click", function() {
-    //myLeads.push(inputEl.value)
-    //inputEl.value = ""
-    //localStorage.setItem("myLeads", JSON.stringify(myLeads) )
-    //render(myLeads)
-//})

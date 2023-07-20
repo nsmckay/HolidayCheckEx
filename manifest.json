@@ -2,6 +2,7 @@
     "manifest_version": 3,
     "version": "1.0",
     "name": "Holiday Check",
+    "description": "Copy & paste in a date, and check whether it is a holiday",
     "action": {
         "default_popup": "index.html",
         "default_icon": "HolidayIcon.png"
