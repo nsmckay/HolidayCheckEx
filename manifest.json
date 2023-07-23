@@ -8,6 +8,6 @@
         "default_icon": "HolidayIcon.png"
     },
     "permissions": [
-        "tabs"
+        "https://calendarific.com/"
     ]
 }
