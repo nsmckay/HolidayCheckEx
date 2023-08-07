@@ -8,6 +8,7 @@
         "default_icon": "HolidayIcon.png"
     },
     "permissions": [
-        "https://calendarific.com/"
-    ]
+        "tabs"
+    ],
+    "host_permissions": ["https://calendarific.com/api/v2", "https://cdnjs.cloudflare.com/", "https://cdn.jsdelivr.net/"]
 }
