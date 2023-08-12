@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "dayjs": "^1.11.8"
+    "dayjs": "^1.11.8",
+    "luxon": "^3.4.0"
   }
 }

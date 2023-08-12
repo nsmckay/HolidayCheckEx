@@ -1,3 +1,5 @@
+import { DateTime } from "./node_modules/luxon/src/luxon.js"
+
 let myDate = []
 let myCountry = ""
 
@@ -37,9 +39,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if(dateFromLocalStorage) { // if date already in local storage, use that instead of default
         myDate = dateFromLocalStorage
-        queryDateString = dayjs(myDate[0]).format("MMM-DD-YYYY").toString()
+        //queryDateString = dayjs(myDate[0]).format("MMM-DD-YYYY").toString()
+        queryDateString = new DateTime(myDate[0]).toFormat('MMM-dd-yyyy')
         dateInput.setAttribute("value", queryDateString)
-        queryDate = dayjs(myDate[0]).format("YYYY-MM-DD")
+        //queryDate = dayjs(myDate[0]).format("YYYY-MM-DD")
+        console.log(queryDate)
+        console.log(myDate[0])
+        console.log(typeof(myDate[0]))
+        //queryDate = DateTime.fromJSDate(myDate[0], "yyyy-MM-dd")
+        queryDate = DateTime.fromISO(myDate[0]).toFormat("yyyy-MM-dd")
+        console.log(queryDate)
+        console.log(typeof(queryDate))
         dateOutput.value = queryDate
     }
 }, false)
@@ -57,10 +67,12 @@ countryInput.addEventListener("change", function() {
 
 dateInput.addEventListener("change", function() {
     queryDateString = removeDay(dateInput.value)
-    //console.log(queryDateString)
-    //console.log(typeof queryDateString)
-    queryDate = dayjs(queryDateString).format("YYYY-MM-DD")
-    //console.log(queryDate)
+    console.log(queryDateString)
+    console.log(typeof queryDateString)
+    //queryDate = dayjs(queryDateString).format("YYYY-MM-DD")
+    //queryDate = new DateTime.fromJSDate(queryDateString, "yyyy-MM-dd")
+    queryDate = DateTime.fromISO(queryDateString).toFormat("yyyy-MM-dd")
+    console.log(queryDate)
     dateOutput.value = queryDate // set date output on right to same date as chosen by user on left input
     localStorage.removeItem("myDate") // clear existing date in local storage
     myDate = []
@@ -72,7 +84,7 @@ dateInput.addEventListener("change", function() {
 dateOutput.addEventListener("change", function() { // if user selects date using calendar in right date output box
     queryDate = dateOutput.value
     dateInput.value = ""
-    //console.log(queryDate)
+    console.log(queryDate)
     localStorage.clear() // clear existing date in local storage
     myDate = []
     myDate.push(queryDate)
@@ -138,6 +150,66 @@ function removeDay(str) {
     str = str.replace("rd", "") //remove end of 3rd to parse correctly
     str = str.replace("th", "") //remove end of nth to parse correctly (4th, 5th etc.)
 
+    str = str.replace("January", "01") //luxon doesn't parse months as words, so they need to be changed to numbers
+    str = str.replace("January ", "01")
+    str = str.replace("Jan", "01")
+    str = str.replace("Jan ", "01")
+
+    str = str.replace("February", "02")
+    str = str.replace("February ", "02")
+    str = str.replace("Feb", "02")
+    str = str.replace("Feb ", "02")
+
+    str = str.replace("March", "03")
+    str = str.replace("March ", "03")
+    str = str.replace("Mar", "03")
+    str = str.replace("Mar ", "03")
+
+    str = str.replace("April", "04")
+    str = str.replace("April ", "04")
+    str = str.replace("Apr", "04")
+    str = str.replace("Apr ", "04")
+
+    str = str.replace("May", "05")
+    str = str.replace("May ", "05")
+
+    str = str.replace("June", "06")
+    str = str.replace("June ", "06")
+    str = str.replace("Jun", "06")
+    str = str.replace("Jun ", "06")
+
+    str = str.replace("July", "07")
+    str = str.replace("July ", "07")
+    str = str.replace("Jul", "07")
+    str = str.replace("Jul ", "07")
+
+    str = str.replace("August", "08")
+    str = str.replace("August ", "08")
+    str = str.replace("Aug", "08")
+    str = str.replace("Aug ", "08")
+
+    str = str.replace("September", "09")
+    str = str.replace("September ", "09")
+    str = str.replace("Sept", "09")
+    str = str.replace("Sept ", "09")
+    str = str.replace("Sep", "09")
+    str = str.replace("Sep ", "09")
+
+    str = str.replace("October", "10")
+    str = str.replace("October ", "10")
+    str = str.replace("Oct", "10")
+    str = str.replace("Oct ", "10")
+
+    str = str.replace("November", "11")
+    str = str.replace("November ", "11")
+    str = str.replace("Nov", "11")
+    str = str.replace("Nov ", "11")
+
+    str = str.replace("December", "12")
+    str = str.replace("December ", "12")
+    str = str.replace("Dec", "12")
+    str = str.replace("Dec ", "12")
+
     if (str.charAt(0) === " ") {
         str = str.replace(" ", "") //remove space at start of string if there is one
     }
@@ -179,11 +251,12 @@ checkBtn.addEventListener("click", function() {
     }
     //console.log(apiCountry)
 
-    let apiDate = dayjs(myDate[0]).format("MM-DD-YYYY").toString()
+    //let apiDate = dayjs(myDate[0]).format("MM-DD-YYYY").toString()
+    let apiDate = new DateTime(myDate[0]).toFormat('MM-dd-yyyy')
     let apiYear = apiDate.slice(-4)
     let apiMonth = apiDate.slice(0, 2)
     let apiDay = apiDate.slice(3, 5)
-    //console.log(apiDate)
+    console.log(apiDate)
     //console.log(apiYear)
     //console.log(apiMonth)
     //console.log(apiDay)
