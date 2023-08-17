@@ -40,10 +40,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if(dateFromLocalStorage) { // if date already in local storage, use that instead of default
         myDate = dateFromLocalStorage
         //queryDateString = dayjs(myDate[0]).format("MMM-DD-YYYY").toString()
-        queryDateString = new DateTime(myDate[0]).toFormat('MMM-dd-yyyy')
+        //queryDateString = new DateTime(myDate[0]).toFormat('MMM-dd-yyyy')
+        //queryDateString = DateTime.fromISO(myDate[0]).toFormat('MMM-dd-yyyy')
+        queryDateString = DateTime.fromISO(myDate[0]).toFormat('dd-MM-yyyy')
+        //queryDateString = DateTime.fromFormat(myDate[0], "yyyy-MM-dd").toFormat('dd-MM-yyyy')
         dateInput.setAttribute("value", queryDateString)
         //queryDate = dayjs(myDate[0]).format("YYYY-MM-DD")
-        console.log(queryDate)
+        console.log(queryDateString)
         console.log(myDate[0])
         console.log(typeof(myDate[0]))
         //queryDate = DateTime.fromJSDate(myDate[0], "yyyy-MM-dd")
@@ -71,7 +74,8 @@ dateInput.addEventListener("change", function() {
     console.log(typeof queryDateString)
     //queryDate = dayjs(queryDateString).format("YYYY-MM-DD")
     //queryDate = new DateTime.fromJSDate(queryDateString, "yyyy-MM-dd")
-    queryDate = DateTime.fromISO(queryDateString).toFormat("yyyy-MM-dd")
+    //queryDate = DateTime.fromISO(queryDateString).toFormat("yyyy-MM-dd")
+    queryDate = DateTime.fromFormat(queryDateString, "dd MM yy").toFormat("yyyy-MM-dd")
     console.log(queryDate)
     dateOutput.value = queryDate // set date output on right to same date as chosen by user on left input
     localStorage.removeItem("myDate") // clear existing date in local storage
@@ -214,7 +218,12 @@ function removeDay(str) {
         str = str.replace(" ", "") //remove space at start of string if there is one
     }
 
-    str = str.replaceAll(" ", "-") //replace spaces with hyphens to parse more easily
+    //str = str.replaceAll(" ", "-") //replace spaces with hyphens to parse more easily
+
+    str = str.replaceAll("/", " ") //because Luxon can only deal with specific formats, want to replace 12/12/24 with 12 12 14 etc.
+    str = str.replaceAll("-", " ")
+    str = str.replaceAll(".", " ")
+    str = str.replaceAll(":", " ")
 
     return str
 }
@@ -252,7 +261,8 @@ checkBtn.addEventListener("click", function() {
     //console.log(apiCountry)
 
     //let apiDate = dayjs(myDate[0]).format("MM-DD-YYYY").toString()
-    let apiDate = new DateTime(myDate[0]).toFormat('MM-dd-yyyy')
+    //let apiDate = new DateTime(myDate[0]).toFormat('MM-dd-yyyy')
+    let apiDate = DateTime.fromISO(myDate[0]).toFormat('MM-dd-yyyy')
     let apiYear = apiDate.slice(-4)
     let apiMonth = apiDate.slice(0, 2)
     let apiDay = apiDate.slice(3, 5)
