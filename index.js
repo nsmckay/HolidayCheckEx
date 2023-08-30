@@ -22,7 +22,8 @@ const checkResultType = document.getElementById("check-result-type")
 const checkResultDesc = document.getElementById("check-result-desc")
 
 let today = new Date()
-let todayString = today.toDateString()
+//let todayString = today.toDateString()
+let todayString = DateTime.fromJSDate(today).toFormat("dd-MM-yy")
 let queryCountry = countryInput.value // country to be selected by user
 let queryDate = today // date to be selected by user, initialised as today's date
 let queryDateString = todayString
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
     results.style.display = "none"
     dateInput.setAttribute("value", todayString) // date input value initialised as today's date
     dateOutput.valueAsDate = today
+    countryInput.value = "UK"
     if(countryFromLocalStorage) { // if country already in local storage, use that instead of default
         myCountry = countryFromLocalStorage
         countryInput.value = myCountry
@@ -42,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         //queryDateString = dayjs(myDate[0]).format("MMM-DD-YYYY").toString()
         //queryDateString = new DateTime(myDate[0]).toFormat('MMM-dd-yyyy')
         //queryDateString = DateTime.fromISO(myDate[0]).toFormat('MMM-dd-yyyy')
-        queryDateString = DateTime.fromISO(myDate[0]).toFormat('dd-MM-yyyy')
+        queryDateString = DateTime.fromISO(myDate[0]).toFormat('dd-MM-yy')
         //queryDateString = DateTime.fromFormat(myDate[0], "yyyy-MM-dd").toFormat('dd-MM-yyyy')
         dateInput.setAttribute("value", queryDateString)
         //queryDate = dayjs(myDate[0]).format("YYYY-MM-DD")
@@ -75,7 +77,12 @@ dateInput.addEventListener("change", function() {
     //queryDate = dayjs(queryDateString).format("YYYY-MM-DD")
     //queryDate = new DateTime.fromJSDate(queryDateString, "yyyy-MM-dd")
     //queryDate = DateTime.fromISO(queryDateString).toFormat("yyyy-MM-dd")
-    queryDate = DateTime.fromFormat(queryDateString, "dd MM yy").toFormat("yyyy-MM-dd")
+    //queryDate = DateTime.fromFormat(queryDateString, "dd MM yy").toFormat("yyyy-MM-dd")
+    if (myCountry === "UK") {
+        queryDate = DateTime.fromFormat(queryDateString, "dd MM yy").toFormat("yyyy-MM-dd")
+    } else { // myCountry === "USA"
+        queryDate = DateTime.fromFormat(queryDateString, "MM dd yy").toFormat("yyyy-MM-dd")
+    }
     console.log(queryDate)
     dateOutput.value = queryDate // set date output on right to same date as chosen by user on left input
     localStorage.removeItem("myDate") // clear existing date in local storage
@@ -300,11 +307,15 @@ checkBtn.addEventListener("click", function() {
 
 clearBtn.addEventListener("click", function() { // clear values for all inputs
     localStorage.clear()
-    myCountry = ""
-    countryInput.value = myCountry
+    //myCountry = ""
+    myCountry = "UK"
+    //countryInput.value = myCountry
+    countryInput.value = ""
     myDate = []
     queryDateString = ""
     dateInput.setAttribute("value", "")
-    queryDate = today
-    dateOutput.valueAsDate = queryDate
+    //queryDate = today
+    queryDate = DateTime.fromJSDate(today).toFormat("dd-MM-yy")
+    //dateOutput.valueAsDate = queryDate
+    dateOutput.value = queryDate
 })
